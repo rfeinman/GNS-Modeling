@@ -34,4 +34,4 @@ We are still working to clean up some of the experiment code and appologize if s
 
 Please cite our paper:
 
-[Feinman, R. and Lake, B. M. (2020). Learning task-general representations with Generative Neuro-Symbolic Modeling.] *arXiv preprint arXiv:2006.14448.*
+[Feinman, R. and Lake, B. M. (2020). Learning task-general representations with Generative Neuro-Symbolic Modeling.](https://arxiv.org/abs/2006.14448) *arXiv preprint arXiv:2006.14448.*
