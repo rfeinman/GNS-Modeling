@@ -1,5 +1,8 @@
 # Generative Neuro-Symbolic (GNS) Modeling
 
+This is the source code repository for our paper "[Learning Task-General Representations with Generative Neuro-Symbolic Modeling](https://arxiv.org/abs/2006.14448)" (Feinman & Lake, 2020).
+
+
 ## Setup
 
 This code repository requires Python 3 with PyTorch. We recommend using PyTorch >= 1.5.0, as this version was used for development and testing.
@@ -26,3 +29,9 @@ Each experiment has its own unique sub-directory and a README with directions fo
 
 ## Development Notes
 We are still working to clean up some of the experiment code and appologize if some pieces are missing or unclear.
+
+## Citing
+
+Please cite our paper:
+
+[Feinman, R. and Lake, B. M. (2020). Learning task-general representations with Generative Neuro-Symbolic Modeling.] *arXiv preprint arXiv:2006.14448.*
