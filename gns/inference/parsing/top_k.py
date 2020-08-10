@@ -5,8 +5,8 @@ import numpy as np
 import torch
 from pybpl.data import unif_space
 from pybpl.matlab.bottomup import generate_random_parses
-from neuralbpl.omniglot.minimal_splines import fit_minimal_spline
 
+from ...omniglot.minimal_splines import fit_minimal_spline
 from .util import sample_from_generator
 
 

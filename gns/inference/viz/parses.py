@@ -5,7 +5,8 @@ if 'matplotlib' not in sys.modules:
     mpl.use('Agg')
 import matplotlib.pyplot as plt
 from pybpl.splines import get_stk_from_bspline
-from neuralbpl.viz import plot_motor_to_image, get_color, plot_image
+
+from ...viz import plot_motor_to_image, get_color, plot_image
 
 
 

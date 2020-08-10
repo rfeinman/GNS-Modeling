@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from neuralbpl.utils.mvn import tikhonov, compute_cov2d, gauss_norm_to_orig
-from neuralbpl.mixnet.losses import gmm_losses
-from neuralbpl.mixnet.sampling import sample_xy_full, adjust_gmm
+from ..utils.mvn import tikhonov, compute_cov2d, gauss_norm_to_orig
+from ..mixnet.losses import gmm_losses
+from ..mixnet.sampling import sample_xy_full, adjust_gmm
 
 
 def conv_block(in_channels, out_channels, dropout=0.):

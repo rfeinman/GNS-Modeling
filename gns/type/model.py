@@ -5,9 +5,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.utils.rnn as rnn
 from pybpl.splines import get_stk_from_bspline
-from gns import MODEL_SAVE_PATH
-from gns.rendering import Renderer
 
+from .. import MODEL_SAVE_PATH
+from ..rendering import Renderer
 from .terminate_model import CNNTerminate
 from .location_model import CNNStart
 from .stroke_model import LSTMConditioned

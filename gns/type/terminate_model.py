@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Bernoulli
 
-from neuralbpl.mixnet.sampling import adjust_bernoulli
+from ..mixnet.sampling import adjust_bernoulli
 
 
 

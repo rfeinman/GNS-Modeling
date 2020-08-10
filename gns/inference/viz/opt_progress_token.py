@@ -7,8 +7,8 @@ import torch
 from pybpl.util.stroke import dist_along_traj
 from pybpl.util.affine import apply_warp
 from pybpl.splines import get_stk_from_bspline
-from neuralbpl.viz import get_color, plot_image, plot_pimg_over_img
 
+from ...viz import get_color, plot_image, plot_pimg_over_img
 from ...rendering.renderer import Renderer
 from .util import get_intervals
 

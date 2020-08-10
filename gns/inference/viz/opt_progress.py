@@ -4,8 +4,8 @@ if 'matplotlib' not in sys.modules:
     mpl.use('Agg')
 import matplotlib.pyplot as plt
 from pybpl.splines import get_stk_from_bspline
-from neuralbpl.viz import plot_motor_to_image, plot_image, plot_pimg_over_img
 
+from ...viz import plot_motor_to_image, plot_image, plot_pimg_over_img
 from ...rendering.renderer import Renderer
 from .util import get_intervals, get_loss_limits
 

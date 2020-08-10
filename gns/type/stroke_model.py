@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Bernoulli
 
-from neuralbpl.utils.mvn import tikhonov, compute_cov2d, gauss_norm_to_orig
-from neuralbpl.mixnet.losses import gmm_losses_seq, end_losses_seq
-from neuralbpl.mixnet.sampling import sample_xy_full, adjust_gmm, adjust_bernoulli
+from ..utils.mvn import tikhonov, compute_cov2d, gauss_norm_to_orig
+from ..mixnet.losses import gmm_losses_seq, end_losses_seq
+from ..mixnet.sampling import sample_xy_full, adjust_gmm, adjust_bernoulli
 
 
 
