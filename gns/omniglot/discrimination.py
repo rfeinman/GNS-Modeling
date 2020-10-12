@@ -86,8 +86,9 @@ class DiscriminationDatasetPrecomputed(DiscriminationDataset):
     """
     Precomputed version
     """
-    def __init__(self, root, num_runs=10):
+    def __init__(self, root, num_runs=10, seed=383):
         super().__init__(root)
+        np.random.seed(seed)
         self.runs = [self.get() for _ in range(num_runs)]
 
     def __getitem__(self, idx):
