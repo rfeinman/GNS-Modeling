@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 
 from .dataset_flat import load_from_pkl
+from .classification import Run
 
 TARGETS = [
     {'alphabet': 'Atemayar_Qelisayer',
@@ -59,3 +60,35 @@ def load_discrim_data(root):
     alphabets = np.array(alphabets)
 
     return images, characters, alphabets
+
+
+class DiscriminationDataset:
+    """
+    The classification dataset includes X unique classification "runs",
+    each with 24 trials
+    """
+    def __init__(self, root):
+        self.images, self.labels_c, self.labels_a = load_discrim_data(root)
+        self.labels = list(zip(self.labels_a, self.labels_c))
+        self.classes = sorted(set(self.labels))
+
+    def get(self):
+        train_idx = np.zeros(len(self.classes), dtype=np.int64)
+        test_idx = np.zeros(len(self.classes), dtype=np.int64)
+        for j, (a,c) in enumerate(self.classes):
+            idx, = np.where((self.labels_a == a) & (self.labels_c == c))
+            train_idx[j], test_idx[j] = np.random.choice(idx, 2, replace=False)
+
+        return Run(self.images[train_idx], self.images[test_idx])
+
+
+class DiscriminationDatasetPrecomputed(DiscriminationDataset):
+    """
+    Precomputed version
+    """
+    def __init__(self, root, num_runs=10):
+        super().__init__(root)
+        self.runs = [self.get() for _ in range(num_runs)]
+
+    def __getitem__(self, idx):
+        return self.runs[idx]
