@@ -7,8 +7,7 @@ from gns.token import TokenModel
 from gns.type import TypeModel
 from gns.inference import optimization as opt
 from gns.omniglot.classification import ClassificationDataset
-
-from util import mkdir, time_string
+from gns.utils.experiments import mkdir, time_string
 
 
 

@@ -7,8 +7,7 @@ from pybpl.splines import get_stk_from_bspline
 from gns.inference.parsing import get_topK_parses
 from gns.omniglot.classification import ClassificationDataset
 from gns.type import TypeModel
-
-from util import mkdir, time_string
+from gns.utils.experiments import mkdir, time_string
 
 
 
