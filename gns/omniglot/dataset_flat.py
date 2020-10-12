@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from pybpl.util.stroke import dist_along_traj
 from pybpl.data import unif_space
 
-from .. import DATADIR
 from .dataset import Dataset, ProcessedDataset
 from .dataset import load_dataset_pkl
 
@@ -135,8 +134,8 @@ class DatasetFlat:
         D_test = DatasetFlat([self.examples[i] for i in idx_test])
         return D_train, D_test
 
-def load_from_orig(save_dir=None, processed=True, key=None, canvases=True):
-    D = load_dataset_pkl(save_dir, processed, key)
+def load_from_orig(root, background=True, processed=True, canvases=True):
+    D = load_dataset_pkl(root, background, processed)
     D = DatasetFlat().load_from_original(D)
     if canvases:
         return D
@@ -144,13 +143,11 @@ def load_from_orig(save_dir=None, processed=True, key=None, canvases=True):
         del ex.canvases
     return D
 
-def load_from_pkl(save_file=None, key=None, canvases=True):
-    if save_file is None:
-        assert key in ['train', 'test']
-        if key == 'train':
-            save_file = os.path.join(DATADIR, 'background_set_new.pkl')
-        else:
-            save_file = os.path.join(DATADIR, 'evaluation_set_new.pkl')
+def load_from_pkl(root, background=True, canvases=True):
+    if background:
+        save_file = os.path.join(root, 'background_set_new.pkl')
+    else:
+        save_file = os.path.join(root, 'evaluation_set_new.pkl')
     with open(save_file, 'rb') as f:
         D = pickle.load(f)
     if canvases:

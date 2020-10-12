@@ -3,8 +3,6 @@ import shutil
 import pickle
 from sklearn.model_selection import train_test_split
 
-from .. import DATADIR
-
 
 class Dataset:
     def __init__(self, drawings, images):
@@ -136,13 +134,11 @@ def overwrite():
         else:
             print("Invalid input. Please choose 'y' or 'n'.")
 
-def load_dataset_pkl(save_dir=None, processed=True, key=None):
-    if save_dir is None:
-        assert key in ['train', 'test']
-        if key == 'train':
-            save_dir = os.path.join(DATADIR, 'background_set_pkl')
-        else:
-            save_dir = os.path.join(DATADIR, 'evaluation_set_pkl')
+def load_dataset_pkl(root, background=True, processed=True):
+    if background:
+        save_dir = os.path.join(root, 'background_set_pkl')
+    else:
+        save_dir = os.path.join(root, 'evaluation_set_pkl')
 
     kwargs = {}
     attributes = ['drawings', 'images']
