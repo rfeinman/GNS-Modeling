@@ -1,4 +1,6 @@
+import os
 import numpy as np
+import scipy.io as sio
 from sklearn.preprocessing import LabelEncoder
 
 from .dataset_flat import load_from_pkl
@@ -93,3 +95,23 @@ class DiscriminationDatasetPrecomputed(DiscriminationDataset):
 
     def __getitem__(self, idx):
         return self.runs[idx]
+
+
+
+# load human data
+
+def load_human_data(root=None):
+    # load
+    human_results = sio.loadmat(os.path.join(root, 'confusable_sim_mat.mat'))
+    discrim_set = sio.loadmat(os.path.join(root, 'discrim_select_newset.mat'))
+    # extract elements
+    acc_M = human_results['acc_M']
+    #names_discrim = discrim_set['names_discrim']
+    alphabet_names = discrim_set['names_discrim_short'][0]
+    character_ids = discrim_set['char_num']
+    # process
+    sim_human_M = (acc_M + acc_M.T) / 2
+    alphabet_names = [elt[0] for elt in alphabet_names] # list of length 6
+    character_ids = np.concatenate([elt[0].T for elt in character_ids]) # array of size [6,4]
+
+    return sim_human_M, alphabet_names, character_ids
