@@ -20,7 +20,8 @@ export PYTHONPATH="/path/to/pyBPL:$PYTHONPATH"
 ```
 
 At the moment, pyBPL uses the bottom-up parser from the [BPL matlab code](https://github.com/brendenlake/BPL) during inference. Therefore to use our inference algorithms you will need to download the BPL matlab repository and install the [MATLAB Engine API for Python](https://www.mathworks.com/help/matlab/matlab-engine-for-python.html) to call its functions from python. Make sure you have created an environment variable `BPL_PATH` that points to the BPL base directory.
-NOTE: we are working on re-implementing the bottom-up parser in pyBPL. Once complete, pyBPL will be a fully self-contained python package.
+
+__Note:__ we are working on re-implementing the bottom-up parser in pyBPL. Once complete, pyBPL will be a fully self-contained python package.
 
 ## Running Experiments
 
