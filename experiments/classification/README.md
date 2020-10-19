@@ -7,13 +7,13 @@ Before you begin, unzip the file `one-shot-classification.zip` to produce folder
 The one-shot classification experiments require a multi-GPU cluster to complete in reasonable time. I've included a python script to execute cluster jobs using the [submitit](https://github.com/facebookincubator/submitit) package for Slurm cluster scheduling. To execute all jobs for the forward classification score (explained in paper Section 4), run the following command:
 
 ```
-python submitit_all.py
+python run_classification.py
 ```
 
 Once completed, you will need to re-run this script for the reverse direction to obtain the full two-way criterion of Eq. 5:
 
 ```
-python submitit_all.py --reverse
+python run_classification.py --reverse
 ```
 
 As a reminder, computation for each the forward and reverse direction involves a series of 3 steps (explained in paper Section 4 & Appendix B):
