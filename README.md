@@ -26,7 +26,8 @@ __Note:__ we are working on re-implementing the bottom-up parser in pyBPL. Once 
 ## Running Experiments
 
 After completing the setup steps above, navigate to the `experiments/` directory to find scripts for running our experiments with the GNS model. 
-Each experiment has its own unique sub-directory and a README with directions for running the experiment scripts.
+Each experiment has its own unique sub-directory and a `README` with directions for running the experiment scripts.
+Some experiments require a cluster to complete in reasonable time, and we've included python scripts to execute cluster jobs using the [submitit](https://github.com/facebookincubator/submitit) package for Slurm cluster scheduling.
 
 ## Development Notes
 We are still working to clean up some of the experiment code and appologize if some pieces are missing or unclear.
