@@ -1,3 +1,4 @@
+import os
 import argparse
 import pickle
 import submitit
@@ -22,7 +23,13 @@ def array_step(executor, func, jobs, inputs, errors):
 
     return jobs, errors
 
+def save_errors(errors):
+    with open("./logs/errors.pkl", "wb") as f:
+        pickle.dump(errors, f)
+
 def main(args):
+    if not os.path.exists('./results'):
+        os.mkdir('./results')
     run_IDs = list(range(20))
     errors = {r:None for r in run_IDs}
     jobs = {r:None for r in run_IDs}
@@ -44,19 +51,18 @@ def main(args):
     print('step 1: parsing')
     fn = lambda r : get_base_parses(r, reverse=args.reverse)
     jobs, errors = array_step(executor, fn, jobs, run_IDs, errors)
+    save_errors(errors)
 
     print('step 2: optimization')
     fn = lambda r : optimize_parses(r, reverse=args.reverse)
     jobs, errors = array_step(executor, fn, jobs, run_IDs, errors)
+    save_errors(errors)
 
     print('step 3: re-fitting')
     executor.update_parameters(slurm_time='48:00:00') # more compute time needed for this step
     fn = lambda r : refit_parses_multi(r, reverse=args.reverse)
     jobs, errors = array_step(executor, fn, jobs, run_IDs, errors)
-
-    # save errors
-    with open("./logs/errors.pkl", "wb") as f:
-        pickle.dump(errors, f)
+    save_errors(errors)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

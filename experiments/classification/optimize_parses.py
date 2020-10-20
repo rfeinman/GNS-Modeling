@@ -53,7 +53,7 @@ def save_new_parses(parse_list, log_probs, save_dir, K_per_img, reverse=False):
             torch.save(parse.state_dict(), parse_file)
 
 def optimize_parses(run_id, iterations=1500, reverse=False, dry_run=False):
-    run_dir = './run%0.2i' % (run_id+1)
+    run_dir = './results/run%0.2i' % (run_id+1)
     load_dir = os.path.join(run_dir, 'base_parses')
     save_dir = os.path.join(run_dir, 'tuned_parses')
     assert os.path.exists(run_dir)

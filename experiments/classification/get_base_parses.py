@@ -50,9 +50,11 @@ def get_base_parses(run_id, trials_per=800, reverse=False, dry_run=False):
         imgs = run.test_imgs
     else:
         imgs = run.train_imgs
-    run_dir = './run%0.2i' % (run_id+1)
+    results_dir = './results'
+    run_dir = os.path.join(results_dir, 'run%0.2i' % (run_id+1))
     save_dir = os.path.join(run_dir, 'base_parses')
     if not dry_run:
+        mkdir(results_dir)
         mkdir(run_dir)
         mkdir(save_dir)
 

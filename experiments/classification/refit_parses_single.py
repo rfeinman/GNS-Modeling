@@ -63,7 +63,7 @@ def save_new_parses(parses_j, log_probs_j, save_dir, K_per_img, test_id, reverse
 
 def refit_parses_single(run_id, test_id, iterations=1500, reverse=False,
                         run=None, dry_run=False):
-    run_dir = './run%0.2i' % (run_id+1)
+    run_dir = './results/run%0.2i' % (run_id+1)
     load_dir = os.path.join(run_dir, 'tuned_parses')
     save_dir = os.path.join(run_dir, 'refitted_parses')
     assert os.path.exists(run_dir)
