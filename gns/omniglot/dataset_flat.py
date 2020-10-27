@@ -38,8 +38,7 @@ class Example:
             attr = getattr(self, attr_key)
             attr = [attr[i] for i in range(ns) if lengths[i] >= mindist]
             setattr(self, attr_key, attr)
-        empty = self.num_strokes == 0
-        return empty
+        return self.num_strokes > 0
 
 def stk_length(stk, uniform=False):
     if uniform:
@@ -95,12 +94,8 @@ class DatasetFlat:
         return self.examples[idx]
 
     def rm_small_strokes(self, mindist):
-        keep = []
-        for i, ex in enumerate(self.examples):
-            empty = ex.rm_small_strokes(mindist)
-            if not empty:
-                keep.append(i)
-        self.examples = [self.examples[i] for i in keep]
+        keep_fn = lambda ex : ex.rm_small_strokes(mindist)
+        self.examples = list(filter(keep_fn, self.examples))
 
     def alphabet_split(self, test_size, random_state=None):
         alphabets = [ex.alphabet for ex in self.examples]
