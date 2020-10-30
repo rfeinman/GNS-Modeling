@@ -12,8 +12,8 @@ def emphasize_axis(ax, lw=2., color=None):
         if color is not None:
             ax.spines[key].set_color(color)
 
-def plot_image(ax, img, vmin=None, vmax=None):
-    ax.imshow(img, cmap=plt.cm.binary, vmin=vmin, vmax=vmax)
+def plot_image(ax, img, cmap=plt.cm.binary, vmin=None, vmax=None):
+    ax.imshow(img, cmap=cmap, vmin=vmin, vmax=vmax)
     ax.set_xticks([])
     ax.set_yticks([])
 

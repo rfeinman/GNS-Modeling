@@ -106,16 +106,16 @@ def plot_gmm(ax, mix_probs, means, covs, mean_X=None, std_X=None,
 
     return zorder
 
-def plot_gmm_heatmap(ax, mix_probs, means, covs, mean_X=None, std_X=None,
+def plot_gmm_heatmap(ax, mix_probs, means, covs, norm=None, motor2img=True,
                      cmap=plt.cm.plasma, transparency=False, vmax=None):
     # normalize parameters
     K = len(mix_probs)
-    means = means.clone()
-    covs = covs.clone()
+    means = means.clone(); covs = covs.clone()
     for k in range(K):
-        if (mean_X is not None) and (std_X is not None):
-            means[k], covs[k] = gauss_norm_to_orig(means[k], covs[k], mean_X=mean_X, std_X=std_X)
-        means[k], covs[k] = gauss2d_motor_to_image(means[k], covs[k])
+        if norm is not None:
+            means[k], covs[k] = gauss_norm_to_orig(means[k], covs[k], mean_X=norm[0], std_X=norm[1])
+        if motor2img:
+            means[k], covs[k] = gauss2d_motor_to_image(means[k], covs[k])
 
     # compute probability map
     xi, yi = torch.meshgrid(torch.arange(105), torch.arange(105))
