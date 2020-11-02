@@ -29,7 +29,7 @@ def mvn_diag(x, means, scales):
 
     return mvn_logprobs
 
-def gmm_losses(Y_pred, Y, full_cov=False):
+def gmm_losses(Y_pred, Y, full_cov=False, is_log=False):
     """
     :param Y_pred: tuple
         mix_probs: (...,k)
@@ -54,13 +54,13 @@ def gmm_losses(Y_pred, Y, full_cov=False):
         mvn_logprobs = mvn_diag(Y, means, scales) # (...,k)
 
     # GMM log-prob
-    gmm_logprobs = torch.log(mix_probs) + mvn_logprobs # (...,k)
-    logprobs = torch.logsumexp(gmm_logprobs, dim=-1) # (...,)
+    mix_logprobs = mix_probs if is_log else mix_probs.log()
+    logprobs = torch.logsumexp(mix_logprobs + mvn_logprobs, dim=-1) # (...,)
     losses = -logprobs # (...,)
 
     return losses
 
-def gmm_losses_seq(Y_pred, Y, mask, full_cov=False):
+def gmm_losses_seq(Y_pred, Y, mask, full_cov=False, is_log=False):
     """
     :param Y_pred: tuple
     :param Y: (n,s,d)
@@ -68,7 +68,7 @@ def gmm_losses_seq(Y_pred, Y, mask, full_cov=False):
     :return losses: (n,)
     """
     # compute negative log-probs
-    losses_seq = gmm_losses(Y_pred, Y, full_cov) # (n,s)
+    losses_seq = gmm_losses(Y_pred, Y, full_cov, is_log) # (n,s)
     # sum over non-padding locations
     losses = torch.sum(apply_mask(losses_seq, mask), dim=-1) # (n,)
 
