@@ -42,6 +42,8 @@ def optimize_parse(parse, image, loss_fn, iterations=3000, optimizer=None,
             nn.utils.clip_grad_value_(parse.render_params, clip_grad)
         optimizer.step()
         losses[i] = loss.item()
+        if progbar:
+            iterator.set_postfix(loss=loss.item())
         if (stopper is not None) and stopper(loss.item()):
             if progbar: iterator.close()
             break
