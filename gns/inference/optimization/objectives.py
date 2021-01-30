@@ -68,3 +68,11 @@ class FullModel:
     def loss_fn(self, parse, image):
         losses = self.losses_fn([parse], image[None])
         return losses[0]
+
+    def likelihood_loss_fn(self, parse, image, drawing=None):
+        losses = self.likelihood_losses_fn(
+            [parse],
+            image[None],
+            None if drawing is None else [drawing]
+        )
+        return losses[0]
