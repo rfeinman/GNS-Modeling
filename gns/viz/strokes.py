@@ -36,7 +36,7 @@ def plot_traj(axis, x, color, lw=2, arrow_size=0, pt_size=0):
     else:
         axis.plot(x[0,0], x[0,1], color=color, linewidth=lw, marker='.')
     if pt_size > 0:
-        axis.scatter(x[0,0], -x[0,1], color=color, linewidth=lw, s=pt_size)
+        axis.scatter(x[0,0], x[0,1], color=color, linewidth=lw, s=pt_size)
 
 def plot_spline(axis, y, color, lw, neval=200, start=None):
     x = traj_from_spline(y, neval)
