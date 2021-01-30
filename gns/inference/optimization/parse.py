@@ -12,14 +12,14 @@ def param_state(p):
 
 
 class Parse(nn.Module):
-    def __init__(self, init_parse, init_blur=16., init_epsilon=0.5):
+    def __init__(self, init_parse, init_blur=16., init_epsilon=0.5, bound_mode='soft'):
         super().__init__()
-        x = [nn.Parameter(spl.clone()) for spl in init_parse]
-        self.x = nn.ParameterList(x)
-
-        # init blur
-        self.blur_base = nn.Parameter(torch.tensor(init_blur).float())
-        self.epsilon_base = nn.Parameter(torch.tensor(init_epsilon).float())
+        if bound_mode not in ['soft', 'passthrough']:
+            raise ValueError("bound_mode must be either 'soft' or 'passthrough'")
+        self.bound_mode = bound_mode
+        self.x = nn.ParameterList([nn.Parameter(spl.clone()) for spl in init_parse])
+        self.blur_base = nn.Parameter(torch.tensor(init_blur, dtype=torch.float))
+        self.epsilon_base = nn.Parameter(torch.tensor(init_epsilon, dtype=torch.float))
 
     @property
     def drawing(self):
@@ -27,11 +27,21 @@ class Parse(nn.Module):
 
     @property
     def blur(self):
-        return C.soft_ub_lb(self.blur_base, 0.5, 16.)
+        if self.bound_mode == 'soft':
+            return C.soft_ub_lb(self.blur_base, 0.5, 16.)
+        elif self.bound_mode == 'passthrough':
+            return C.passthrough_ub_lb(self.blur_base, 0.5, 16.)
+        else:
+            raise RuntimeError('invalid bound_mode encountered.')
 
     @property
     def epsilon(self):
-        return C.soft_ub_lb(self.epsilon_base, 1e-4, 0.5)
+        if self.bound_mode == 'soft':
+            return C.soft_ub_lb(self.epsilon_base, 1e-4, 0.5)
+        elif self.bound_mode == 'passthrough':
+            return C.passthrough_ub_lb(self.epsilon_base, 1e-4, 0.5)
+        else:
+            raise RuntimeError('invalid bound_mode encountered.')
 
     @property
     def state(self):
@@ -51,9 +61,9 @@ class Parse(nn.Module):
 
 
 class ParseWithToken(Parse):
-    def __init__(self, init_parse, init_blur=16., init_epsilon=0.5):
+    def __init__(self, init_parse, init_blur=16., init_epsilon=0.5, bound_mode='soft'):
         # super
-        super().__init__(init_parse, init_blur, init_epsilon)
+        super().__init__(init_parse, init_blur, init_epsilon, bound_mode)
 
         # stroke params
         loc_noise = [nn.Parameter(torch.zeros(2)) for spl in init_parse]
