@@ -26,7 +26,7 @@ def add_arrow(line, size=15, **kwargs):
         size=size, **kwargs
     )
 
-def plot_traj(axis, x, color, lw=2, arrow_size=0):
+def plot_traj(axis, x, color, lw=2, arrow_size=0, pt_size=0):
     x = torch_to_numpy(x)
     x = space_motor_to_img(x)
     if len(x) > 1 and dist_along_traj(x) > 0.01:
@@ -35,6 +35,8 @@ def plot_traj(axis, x, color, lw=2, arrow_size=0):
             add_arrow(line, arrow_size)
     else:
         axis.plot(x[0,0], x[0,1], color=color, linewidth=lw, marker='.')
+    if pt_size > 0:
+        axis.scatter(x[0,0], -x[0,1], color=color, linewidth=lw, s=pt_size)
 
 def plot_spline(axis, y, color, lw, neval=200, start=None):
     x = traj_from_spline(y, neval)
@@ -44,7 +46,7 @@ def plot_spline(axis, y, color, lw, neval=200, start=None):
     plot_traj(axis, x, color, lw)
 
 def plot_motor_to_image(axis, strokes, lw=2, colored=True, arrow_size=0,
-                        imsize=(105,105)):
+                        pt_size=0, imsize=(105,105)):
     ns = len(strokes)
     if colored:
         colors = [get_color(i) for i in range(ns)]
@@ -54,7 +56,7 @@ def plot_motor_to_image(axis, strokes, lw=2, colored=True, arrow_size=0,
         scale = torch.tensor(imsize, dtype=torch.float32)/105
         strokes = [scale*stk for stk in strokes]
     for i in range(ns):
-        plot_traj(axis, strokes[i], colors[i], lw, arrow_size)
+        plot_traj(axis, strokes[i], colors[i], lw, arrow_size, pt_size)
     axis.set_xticks([])
     axis.set_yticks([])
     if imsize == (105,105):
