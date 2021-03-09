@@ -286,7 +286,7 @@ def broaden_filter(a, b, device=None):
         [[a/12, a/6, a/12],
          [a/6, 1-a, a/6],
          [a/12, a/6, a/12]],
-        dtype=torch.float,
+        dtype=torch.get_default_dtype(),
         device=device
     )
     H = H[None, None]
