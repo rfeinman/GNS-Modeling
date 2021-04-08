@@ -45,6 +45,10 @@ class AttendSAT(nn.Module):
         self.U = nn.Linear(hidden_dim, attention_dim)
         self.W = nn.Linear(fmap_dim, attention_dim)
         self.v = nn.Linear(attention_dim, 1)
+        self.W_a = None
+
+    def register_annotation(self, a):
+        self.W_a = self.W(a)
 
     def forward(self, a, h):
         """
@@ -52,7 +56,7 @@ class AttendSAT(nn.Module):
         :param h: (n,hid)
         :return alpha: (n,locs)
         """
-        W_a = self.W(a) # (n,locs,att)
+        W_a = self.W(a) if (self.W_a is None) else self.W_a # (n,locs,att)
         U_h = self.U(h).unsqueeze(1) # (n,1,att)
         att = torch.tanh(W_a + U_h) # (n,locs,att)
         e = self.v(att) # (n,locs,1)
@@ -69,6 +73,9 @@ class AttendDOT(nn.Module):
     def __init__(self, fmap_dim, hidden_dim):
         super().__init__()
         self.W = nn.Linear(hidden_dim, fmap_dim, bias=False)
+
+    def register_annotation(self, a):
+        pass
 
     def forward(self, a, h):
         """
@@ -286,6 +293,7 @@ class LSTMConditioned(nn.Module):
         # init
         a = self.cnn(x_canv) # (n,locs,feats)
         h_t, c_t = self.f_init(a, start) # (layers,n,hid)
+        self.f_att.register_annotation(a)
         h = h_t[-1] # (n,hid)
 
         # dropout masks
@@ -380,6 +388,7 @@ class LSTMConditioned(nn.Module):
         s_embed = self.s_embed(start) # (1,16)
         a = self.cnn(canv) # (1,locs,feats)
         h_t, c_t = self.f_init(a, s_embed) # (layers,1,hid)
+        self.f_att.register_annotation(a)
         h = h_t[-1] # (1,hid)
         mask_hf, mask_hr, mask_comb = self.dropout_masks(1)
         x = torch.zeros(1,2)
