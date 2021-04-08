@@ -85,8 +85,8 @@ class Painter(nn.Module):
         super().__init__()
         if PM is None:
             PM = Parameters()
-        self.register_buffer('ink_pp', PM.ink_pp)
-        self.register_buffer('ink_max_dist', PM.ink_max_dist)
+        self.ink_pp = PM.ink_pp
+        self.ink_max_dist = PM.ink_max_dist
         self.register_buffer('index_mat',
                              torch.arange(PM.imsize[0]*PM.imsize[1]).view(PM.imsize))
         self.register_buffer('space_flip', torch.tensor([-1.,1.]))
@@ -94,11 +94,11 @@ class Painter(nn.Module):
 
     @property
     def device(self):
-        return self.ink_pp.device
+        return self.index_mat.device
 
     @property
     def is_cuda(self):
-        return self.ink_pp.is_cuda
+        return self.index_mat.is_cuda
 
     def space_motor_to_img(self, stk):
         return torch.flip(stk, dims=[-1])*self.space_flip
@@ -134,7 +134,7 @@ class Painter(nn.Module):
             myink = self.ink_pp
         else:
             dist = torch.norm(stk[1:] - stk[:-1], dim=-1) # shape (k,)
-            dist = torch.min(dist, self.ink_max_dist)
+            dist = dist.clamp(None, self.ink_max_dist)
             dist = torch.cat([dist[:1], dist])
             myink = (self.ink_pp/self.ink_max_dist)*dist # shape (k,)
 
