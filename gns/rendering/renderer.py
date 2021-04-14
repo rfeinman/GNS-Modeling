@@ -131,7 +131,7 @@ class Painter(nn.Module):
 
         # compute distance between each trajectory point and the next one
         if stk.shape[0] == 1:
-            myink = self.ink_pp
+            myink = stk.new_tensor(self.ink_pp)
         else:
             dist = torch.norm(stk[1:] - stk[:-1], dim=-1) # shape (k,)
             dist = dist.clamp(None, self.ink_max_dist)
