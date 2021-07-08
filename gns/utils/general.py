@@ -5,7 +5,6 @@ if 'matplotlib' not in sys.modules:
     import matplotlib as mpl
     mpl.use('Agg')
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split as tt_split
 import torch
 from pybpl.splines import get_stk_from_bspline
 from pybpl.rendering import render_image
@@ -99,6 +98,7 @@ def show_weights(W, ncol=10):
     plt.show()
 
 def train_test_split(*tensors, test_size, stratify=None, random_state=None):
+    from sklearn.model_selection import train_test_split as tt_split
     if stratify is not None:
         assert isinstance(stratify, torch.Tensor)
         stratify = stratify.numpy()

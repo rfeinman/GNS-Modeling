@@ -1,7 +1,6 @@
 import os
 import shutil
 import pickle
-from sklearn.model_selection import train_test_split
 
 
 class Dataset:
@@ -42,6 +41,7 @@ class Dataset:
                 pickle.dump(getattr(self, attr), f)
 
     def alphabet_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         akeys = list(self.keys())
         akeys_train, akeys_test = train_test_split(
             akeys, test_size=test_size, random_state=random_state
@@ -58,6 +58,7 @@ class Dataset:
         return D_train, D_test
 
     def character_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         ckeys_train = {}
         ckeys_test = {}
         for a in self.keys():
@@ -82,6 +83,7 @@ class Dataset:
         return D_train, D_test
 
     def example_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         ekeys_train = {}
         ekeys_test = {}
         for a in self.keys():

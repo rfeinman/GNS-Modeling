@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import scipy.io as sio
-from sklearn.preprocessing import LabelEncoder
 
 from .dataset_flat import load_from_pkl
 from .classification import Run
@@ -40,6 +39,7 @@ TARGETS = [
 
 
 def get_class_data(dataset, tgt):
+    from sklearn.preprocessing import LabelEncoder
     images = np.stack([ex.image for ex in dataset if ex.alphabet == tgt['alphabet']])
     labels = np.array([ex.character_id for ex in dataset if ex.alphabet == tgt['alphabet']])
     labels = LabelEncoder().fit_transform(labels) + 1

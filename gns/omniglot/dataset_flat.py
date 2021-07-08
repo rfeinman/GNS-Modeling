@@ -1,7 +1,6 @@
 import os
 import pickle
 import numpy as np
-from sklearn.model_selection import train_test_split
 from pybpl.util.stroke import dist_along_traj
 from pybpl.data import unif_space
 
@@ -98,6 +97,7 @@ class DatasetFlat:
         self.examples = list(filter(keep_fn, self.examples))
 
     def alphabet_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         alphabets = [ex.alphabet for ex in self.examples]
         alphabets = np.unique(alphabets)
         a_train, a_test = train_test_split(
@@ -108,6 +108,7 @@ class DatasetFlat:
         return D_train, D_test
 
     def character_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         idx = np.arange(len(self.examples))
         labels = [ex.alphabet for ex in self.examples]
         idx_train, idx_test = train_test_split(
@@ -119,6 +120,7 @@ class DatasetFlat:
         return D_train, D_test
 
     def example_split(self, test_size, random_state=None):
+        from sklearn.model_selection import train_test_split
         idx = np.arange(len(self.examples))
         labels = [ex.character_id for ex in self.examples]
         idx_train, idx_test = train_test_split(

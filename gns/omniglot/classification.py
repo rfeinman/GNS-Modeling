@@ -1,10 +1,9 @@
 import os
 import numpy as np
-from imageio import imread
-
 
 
 def load_image(fname):
+    from imageio import imread
     img = imread(fname)
     img = np.array(img, dtype=bool)
     img = np.logical_not(img)
