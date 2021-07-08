@@ -43,11 +43,8 @@ def compute_cov2d(scales, corrs):
     scales: (...,d)
     corrs: (...,)
     """
-    # compute covariances
-    cov12 = corrs*torch.prod(scales,dim=-1) # (...,)
-    covs = torch.diag_embed(scales**2) # (...,d,d)
-    I = torch.diag_embed(torch.ones_like(scales)) # (...,d,d)
-    covs = covs + cov12.unsqueeze(-1).unsqueeze(-1)*(1.-I)
+    covs = torch.diag_embed(scales**2)  # (*,d,d)
+    covs[...,0,1] = covs[...,1,0] = corrs * scales.prod(-1)
 
     return covs
 

@@ -1,4 +1,4 @@
-import numpy as np
+import math
 import torch
 import torch.nn as nn
 import torch.utils.data
@@ -14,12 +14,10 @@ def mvn_full(x, means, covs):
     return mvn_logprobs
 
 def mvn_full_custom(x, means, scales, corrs):
-    x_diff = x.unsqueeze(-2) - means # (...,k,d)
-    Z1 = torch.sum(x_diff**2/scales**2, -1) # (...,k)
-    Z2 = 2*corrs*torch.prod(x_diff,-1)/torch.prod(scales,-1) # (...,k)
-    mvn_logprobs1 = -(Z1-Z2)/(2*(1-corrs**2)) # (...,k)
-    mvn_logprobs2 = -torch.log(2*np.pi*torch.prod(scales,-1)*torch.sqrt(1-corrs**2)) # (...,k)
-    mvn_logprobs = mvn_logprobs1 + mvn_logprobs2 # (...,k)
+    tmp = 1 - corrs**2
+    delta = (x.unsqueeze(-2) - means) / scales  # [*,k,2]
+    mvn_logprobs = (corrs * delta.prod(-1) - 0.5 * delta.pow(2).sum(-1)) / tmp  # [*,k]
+    mvn_logprobs -= scales.log().sum(-1) + 0.5 * tmp.log() + math.log(2 * math.pi)
 
     return mvn_logprobs
 
